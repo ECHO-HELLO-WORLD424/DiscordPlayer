@@ -16,7 +16,7 @@
 ## How to use
 
 1. Get yourself a discord app, remember the client ID of your app.
-2. Upload the cover of your album in that app's `Rich Peresence` page. You may see discord update the name of your image after uploading, remember the updated file name.
+2. Upload the cover of your album in that app's `Rich Peresence Art Assets` page. You may see discord update the name of your image after uploading, remember the updated file name.
 3. Rename your cover image to discord's version, then put it to directory root of your album
 4. Create a `details.txt` in your album's directory root, then write something to describe your album there.
 5. Launch the app. Go to "Settings" and fill in your app's client ID.
