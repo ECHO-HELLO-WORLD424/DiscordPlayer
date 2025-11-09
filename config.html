@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="/src/styles.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Settings - Music Player</title>
+    <script type="module" src="/src/config.ts" defer></script>
+</head>
+
+<body>
+    <!-- App Header -->
+    <header class="app-header">
+        <h1>Settings</h1>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div class="config-container">
+            <section class="config-section">
+                <h2>Discord Rich Presence</h2>
+
+                <div class="form-group">
+                    <label for="client-id-input">Discord Application Client ID</label>
+                    <input
+                        class="input-field"
+                        id="client-id-input"
+                        type="text"
+                        placeholder="Enter your Discord Client ID..."
+                    />
+                    <p class="help-text">
+                        Get your Client ID from the
+                        <a href="https://discord.com/developers/applications" target="_blank">Discord Developer Portal</a>
+                    </p>
+                </div>
+
+                <button id="save-btn" class="primary-button">Save Settings</button>
+                <p id="save-msg" class="status-message"></p>
+            </section>
+
+            <section class="config-section">
+                <h2>Navigation</h2>
+                <button id="back-btn" class="secondary-button">Back to Player</button>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

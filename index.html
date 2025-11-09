@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="/src/styles.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Music Player</title>
+    <script type="module" src="/src/main.ts" defer></script>
+</head>
+
+<body>
+    <!-- App Header -->
+    <header class="app-header">
+        <h1>Music Player</h1>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+            <!-- List File Section -->
+            <section class="list-file-section">
+                <h2>List File</h2>
+                <form id="file-form">
+                    <div class="form-group">
+                        <label for="path-input">Directory Path</label>
+                        <input class="input-field" id="path-input" type="text" placeholder="Enter a directory..." required/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pattern-input">File Pattern</label>
+                        <input class="input-field" id="pattern-input" type="text" placeholder="Enter pattern (regex)..."/>
+                    </div>
+
+                    <button type="submit" class="primary-button">List Files</button>
+                </form>
+                <p id="file-msg" class="status-message"></p>
+            </section>
+
+            <!-- Function Buttons Section -->
+            <section class="function-buttons-section">
+                <h2>Function Buttons</h2>
+                <div class="fn-buttons-grid">
+                    <button class="fn-button" id="fn-1">Fn 1</button>
+                    <button class="fn-button" id="fn-2">Fn 2</button>
+                    <button class="fn-button" id="fn-3">Fn 3</button>
+                    <button class="fn-button" id="fn-4">Fn 4</button>
+                </div>
+            </section>
+        </aside>
+
+        <!-- Song List Panel -->
+        <section class="song-list-panel">
+            <h2>Playlist</h2>
+            <div class="song-list" id="song-list">
+                <!-- Songs will be dynamically added here -->
+                <div class="no-songs">No songs loaded. Use "List File" to load music files.</div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Player Controls -->
+    <footer class="player-controls">
+        <div class="controls-wrapper">
+            <div class="control-buttons">
+                <button class="control-btn" id="previous-btn" title="Previous">
+                    <img src="/src/assets/icons/skip_previous_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg" alt="Previous" />
+                </button>
+                <button class="control-btn" id="play-btn" title="Play">
+                    <img src="/src/assets/icons/play_arrow_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg" alt="Play" />
+                </button>
+                <button class="control-btn" id="pause-btn" title="Pause">
+                    <img src="/src/assets/icons/pause_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg" alt="Pause" />
+                </button>
+                <button class="control-btn" id="stop-btn" title="Stop">
+                    <img src="/src/assets/icons/stop_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg" alt="Stop" />
+                </button>
+                <button class="control-btn" id="next-btn" title="Next">
+                    <img src="/src/assets/icons/skip_next_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg" alt="Next" />
+                </button>
+            </div>
+
+            <div class="progress-container">
+                <span class="time-label" id="current-time">0:00</span>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                    <label for="progress-slider">Progress Slider</label>
+                    <input type="range" class="progress-slider" id="progress-slider" min="0" max="100" value="0"/>
+                </div>
+                <span class="time-label" id="total-time">0:00</span>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
