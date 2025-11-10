@@ -15,6 +15,12 @@ pub fn run() {
             discord_rpc::discord_disconnect,
             discord_rpc::update_discord_presence
         ])
+        .on_window_event(|_window, event| {
+            if let tauri::WindowEvent::CloseRequested { .. } = event {
+                // Cleanup Discord connection when window is closing
+                let _ = discord_rpc::discord_disconnect();
+            }
+        })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

@@ -529,3 +529,11 @@ window.addEventListener("DOMContentLoaded", () => {
   // Load saved settings from localStorage
   loadSavedSettings();
 });
+
+/**
+ * Cleanup resources when the page is about to unload
+ */
+window.addEventListener('beforeunload', () => {
+  // Dispose of the song player and free blob URLs
+  songPlayer.dispose();
+});

@@ -65,23 +65,6 @@ export class SongManager {
   getAllSongs(): Song[] {
     return [...this.songList];
   }
-
-  /**
-   * Get the total number of songs
-   * @returns The number of songs in the list
-   */
-  getCount(): number {
-    return this.songList.length;
-  }
-
-  /**
-   * Clear the song list
-   */
-  clear(): void {
-    this.songs.clear();
-    this.songList = [];
-  }
-
   /**
    * Join directory path and file name to create absolute path
    * Handles both Windows and Unix path separators
