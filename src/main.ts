@@ -241,9 +241,11 @@ function updateDiscordButtonState(): void {
   if (discordEnabled) {
     fn1Btn.textContent = 'Discord: ON';
     fn1Btn.style.backgroundColor = '#5865F2'; // Discord blue
+    fn1Btn.style.filter = 'drop-shadow(0 0 1em var(--sys-color-green-light))';
   } else {
     fn1Btn.textContent = 'Discord: OFF';
     fn1Btn.style.backgroundColor = ''; // Reset to default
+    fn1Btn.style.filter = '';
   }
 }
 

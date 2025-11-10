@@ -55,27 +55,9 @@
 body {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
   background-color: var(--md-sys-color-surface);
   overflow: hidden;
-}
-
-/* App Header */
-.app-header {
-  background-color: var(--md-sys-color-surface-container);
-  padding: 24px 32px;
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
-}
-
-.app-header h1 {
-  /* MD3 Headline Large */
-  font-size: 32px;
-  line-height: 40px;
-  font-weight: 400;
-  letter-spacing: 0;
-  color: var(--md-sys-color-on-surface);
-  margin: 0;
-  text-align: center;
 }
 
 /* Main Content Layout */
@@ -86,6 +68,7 @@ body {
   padding: 16px;
   flex: 1;
   overflow: hidden;
+  min-height: 0;
 }
 
 /* Sidebar */
@@ -93,14 +76,19 @@ body {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  overflow-y: auto;
+  overflow-y: scroll;
+  overflow-x: hidden
+}
+
+.sidebar::-webkit-scrollbar {
+  display: none;
 }
 
 /* List File Section */
 .list-file-section {
   background-color: var(--md-sys-color-surface-container);
   border-radius: 16px;
-  padding: 24px;
+  padding: 22px;
   border: 2px solid var(--md-sys-color-outline-variant);
 }
 
@@ -136,7 +124,8 @@ body {
   border: 2px solid var(--md-sys-color-outline-variant);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-y: hidden;
+  min-height: 0;
 }
 
 .song-list-panel h2 {
@@ -158,9 +147,9 @@ h2 {
 /* MD3 Outlined Text Field */
 .input-field {
   width: 100%;
-  padding: 16px;
+  padding: 12px;
   font-size: 16px;
-  line-height: 24px;
+  line-height: 20px;
   font-family: inherit;
   color: var(--md-sys-color-on-surface);
   background-color: transparent;
@@ -220,7 +209,6 @@ button:hover {
   box-shadow:
     1px 1px 2px 1px rgba(0, 0, 0, 0.3),
     1px 2px 6px 2px rgba(0, 0, 0, 0.15);
-  filter: drop-shadow(0 0 1em var(--md-sys-color-primary));
 }
 
 button:active {
@@ -302,13 +290,7 @@ a:hover {
 }
 
 .fn-button:hover {
-  background-color: #4A5266;
-  filter: drop-shadow(0 0 1em var(--md-sys-color-primary));
-}
-
-.fn-button:active {
-  background-color: #3A4252;
-  filter: drop-shadow(0 0 1em var(--sys-color-green-light));
+  background-color: #738ea8;
 }
 
 /* Song List */
@@ -316,9 +298,14 @@ a:hover {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  overflow-y: auto;
   flex: 1;
   padding-right: 8px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.song-list::-webkit-scrollbar {
+  display: none;
 }
 
 .no-songs {
@@ -370,7 +357,6 @@ a:hover {
   background-color: var(--md-sys-color-primary-container);
   color: var(--md-sys-color-on-primary-container);
   border-color: var(--md-sys-color-primary);
-  filter: drop-shadow(0 0 1em var(--md-sys-color-primary));
 }
 
 /* Player Controls */
@@ -410,7 +396,7 @@ a:hover {
 }
 
 .control-btn:hover {
-  background-color: #2A5199;
+  background-color: #2f8aa7;
   filter: none;
 }
 
@@ -539,7 +525,6 @@ a:hover {
   cursor: pointer;
   transition: all 0.2s ease;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
   min-height: 48px;
 }
 
