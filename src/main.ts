@@ -47,7 +47,14 @@ const songPlayer = new SongPlayer({
   },
   onSongEnd: () => {
     console.log('Song ended');
-    // TODO: Auto-play next song
+    // Auto-play next song
+    const nextSong = getNextSong();
+    if (nextSong) {
+      console.log('Auto-playing next song:', nextSong.fileName);
+      playSongByFileName(nextSong.fileName);
+    } else {
+      console.log('End of playlist reached');
+    }
   },
   onError: (error: string) => {
     console.error('Player error:', error);
@@ -146,6 +153,10 @@ async function listFiles() {
       // Update current folder path
       currentFolderPath = path;
 
+      // Save directory path and pattern to localStorage
+      localStorage.setItem('last_directory_path', path);
+      localStorage.setItem('last_file_pattern', filePattern.value || '');
+
       // Update Discord RPC if enabled
       if (discordEnabled) {
         updateDiscordPresence(path).catch(err => {
@@ -215,13 +226,69 @@ function updateControlButtonStates(state: PlayerState): void {
     }
   }
 }
+/**
+ * Get the next song in the playlist
+ * @returns The next song or null if there is no next song
+ */
+function getNextSong(): Song | null {
+  const songs = songManager.getAllSongs();
+  if (songs.length === 0 || !currentSelectedSong) return null;
+
+  const currentIndex = songs.findIndex(song => song.fileName === currentSelectedSong);
+  if (currentIndex === -1) return null;
+
+  const nextIndex = currentIndex + 1;
+  if (nextIndex >= songs.length) return null; // End of playlist
+
+  return songs[nextIndex];
+}
 
 /**
- * Get the currently selected song's absolute path
+ * Get the previous song in the playlist
+ * @returns The previous song or null if there is no previous song
  */
-export function getCurrentSongPath(): string | undefined {
-  if (!currentSelectedSong) return undefined;
-  return songManager.getAbsolutePath(currentSelectedSong);
+function getPreviousSong(): Song | null {
+  const songs = songManager.getAllSongs();
+  if (songs.length === 0 || !currentSelectedSong) return null;
+
+  const currentIndex = songs.findIndex(song => song.fileName === currentSelectedSong);
+  if (currentIndex === -1) return null;
+
+  const previousIndex = currentIndex - 1;
+  if (previousIndex < 0) return null; // Beginning of playlist
+
+  return songs[previousIndex];
+}
+
+/**
+ * Play a song by its filename and update the UI
+ * @param fileName The file name of the song to play
+ */
+function playSongByFileName(fileName: string): void {
+  if (!songListEl) return;
+
+  // Remove active class from previously selected song
+  const previousActive = songListEl.querySelector('.song-item.active');
+  previousActive?.classList.remove('active');
+
+  // Find and activate the new song item
+  const songItems = songListEl.querySelectorAll('.song-item');
+  songItems.forEach(item => {
+    if (item.getAttribute('data-file-name') === fileName) {
+      item.classList.add('active');
+    }
+  });
+
+  // Update current selected song
+  currentSelectedSong = fileName;
+
+  // Get the absolute path and play
+  const absolutePath = songManager.getAbsolutePath(fileName);
+  if (absolutePath) {
+    songPlayer.play(absolutePath).catch(error => {
+      console.error('Failed to play song:', error);
+    });
+  }
 }
 
 /**
@@ -241,7 +308,7 @@ function updateDiscordButtonState(): void {
   if (discordEnabled) {
     fn1Btn.textContent = 'Discord: ON';
     fn1Btn.style.backgroundColor = '#5865F2'; // Discord blue
-    fn1Btn.style.filter = 'drop-shadow(0 0 1em var(--sys-color-green-light))';
+    fn1Btn.style.filter = 'drop-shadow(0 0 1em var(--md-sys-color-primary))';
   } else {
     fn1Btn.textContent = 'Discord: OFF';
     fn1Btn.style.backgroundColor = ''; // Reset to default
@@ -305,8 +372,8 @@ async function toggleDiscordRPC(): Promise<void> {
       discordEnabled = false;
       console.log('Discord RPC disabled');
     } else {
-      // Get client ID from sessionStorage
-      const clientId = sessionStorage.getItem('discord_client_id');
+      // Get client ID from localStorage (persists across sessions)
+      const clientId = localStorage.getItem('discord_client_id');
 
       if (!clientId) {
         alert('Please set your Discord Client ID in Settings first');
@@ -363,14 +430,22 @@ function setupPlayerControls(): void {
 
   // Previous button
   previousBtn?.addEventListener('click', () => {
-    // TODO: Implement previous song
-    console.log('Previous button clicked');
+    const previousSong = getPreviousSong();
+    if (previousSong) {
+      playSongByFileName(previousSong.fileName);
+    } else {
+      console.log('No previous song available');
+    }
   });
 
   // Next button
   nextBtn?.addEventListener('click', () => {
-    // TODO: Implement next song
-    console.log('Next button clicked');
+    const nextSong = getNextSong();
+    if (nextSong) {
+      playSongByFileName(nextSong.fileName);
+    } else {
+      console.log('No next song available');
+    }
   });
 
   // Progress slider
@@ -384,6 +459,23 @@ function setupPlayerControls(): void {
       songPlayer.seek(seekTime);
     }
   });
+}
+
+/**
+ * Load saved settings from localStorage
+ */
+function loadSavedSettings(): void {
+  // Load directory path
+  const savedPath = localStorage.getItem('last_directory_path');
+  if (savedPath && filePathEl) {
+    filePathEl.value = savedPath;
+  }
+
+  // Load file pattern
+  const savedPattern = localStorage.getItem('last_file_pattern');
+  if (savedPattern && filePattern) {
+    filePattern.value = savedPattern;
+  }
 }
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -433,4 +525,7 @@ window.addEventListener("DOMContentLoaded", () => {
   if (fn2Btn) {
     fn2Btn.textContent = 'Settings';
   }
+
+  // Load saved settings from localStorage
+  loadSavedSettings();
 });

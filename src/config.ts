@@ -9,8 +9,8 @@ let saveMsgEl: HTMLElement | null;
 function loadSettings(): void {
   if (!clientIdInput) return;
 
-  // Load from sessionStorage (only persists during current session)
-  const savedClientId = sessionStorage.getItem('discord_client_id');
+  // Load from localStorage (persists across sessions)
+  const savedClientId = localStorage.getItem('discord_client_id');
   if (savedClientId) {
     clientIdInput.value = savedClientId;
   }
@@ -37,8 +37,8 @@ function saveSettings(): void {
     return;
   }
 
-  // Save to sessionStorage
-  sessionStorage.setItem('discord_client_id', clientId);
+  // Save to localStorage (persists across sessions)
+  localStorage.setItem('discord_client_id', clientId);
 
   saveMsgEl.textContent = 'Settings saved successfully!';
   saveMsgEl.style.color = '#4caf50';
