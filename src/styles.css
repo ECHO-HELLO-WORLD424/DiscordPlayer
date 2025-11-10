@@ -469,6 +469,88 @@ a:hover {
   background-color: #BAD4FB;
 }
 
+/* Volume Controls */
+.volume-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: 24px;
+}
+
+.volume-icon-btn {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  background-color: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: none;
+  min-height: 40px;
+  transition: background-color 0.2s ease;
+}
+
+.volume-icon-btn:hover {
+  background-color: rgba(168, 199, 250, 0.1);
+  filter: none;
+  box-shadow: none;
+}
+
+.volume-icon-btn:active {
+  background-color: rgba(168, 199, 250, 0.2);
+  box-shadow: none;
+}
+
+.volume-icon-btn img {
+  width: 24px;
+  height: 24px;
+  display: block;
+  pointer-events: none;
+}
+
+.volume-bar {
+  height: 8px;
+  background-color: var(--md-sys-color-surface-container-highest);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  width: 120px;
+}
+
+.volume-fill {
+  height: 100%;
+  background-color: var(--md-sys-color-primary);
+  border-radius: 4px;
+  width: 100%;
+  transition: width 0.1s linear;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.volume-slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  margin: 0;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  opacity: 0;
+}
+
+.volume-bar:hover .volume-fill {
+  background-color: #BAD4FB;
+}
+
 /* Config Page */
 .config-container {
   max-width: 800px;

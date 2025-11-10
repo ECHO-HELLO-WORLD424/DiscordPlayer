@@ -73,6 +73,17 @@
                 <button class="control-btn" id="next-btn" title="Next">
                     <img src="/src/assets/icons/skip_next_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg" alt="Next" />
                 </button>
+
+                <div class="volume-container">
+                    <button class="volume-icon-btn" id="volume-icon-btn" title="Mute/Unmute">
+                        <img id="volume-icon" src="/src/assets/icons/volume_up_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg" alt="Volume" />
+                    </button>
+                    <div class="volume-bar">
+                        <div class="volume-fill" id="volume-fill"></div>
+                        <label for="volume-slider">Volume Slider</label>
+                        <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="100"/>
+                    </div>
+                </div>
             </div>
 
             <div class="progress-container">

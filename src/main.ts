@@ -19,6 +19,12 @@ let progressSlider: HTMLInputElement | null;
 let currentTimeLabel: HTMLElement | null;
 let totalTimeLabel: HTMLElement | null;
 
+// Volume control elements
+let volumeFill: HTMLElement | null;
+let volumeSlider: HTMLInputElement | null;
+let volumeIconBtn: HTMLButtonElement | null;
+let volumeIcon: HTMLImageElement | null;
+
 // Function buttons
 let fn1Btn: HTMLButtonElement | null;
 let fn2Btn: HTMLButtonElement | null;
@@ -28,6 +34,10 @@ let currentFolderPath: string | null = null;
 
 // Discord RPC enabled state
 let discordEnabled: boolean = false;
+
+// Volume state
+let isMuted: boolean = false;
+let previousVolume: number = 1.0;
 
 // Initialize the song manager
 const songManager = new SongManager();
@@ -462,6 +472,80 @@ function setupPlayerControls(): void {
 }
 
 /**
+ * Update the volume icon based on current volume level
+ */
+function updateVolumeIcon(volume: number): void {
+  if (!volumeIcon) return;
+
+  if (volume === 0 || isMuted) {
+    volumeIcon.src = '/src/assets/icons/volume_off_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg';
+  } else if (volume < 0.5) {
+    volumeIcon.src = '/src/assets/icons/volume_down_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg';
+  } else {
+    volumeIcon.src = '/src/assets/icons/volume_up_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg';
+  }
+}
+
+/**
+ * Update the volume bar fill based on current volume
+ */
+function updateVolumeBar(volume: number): void {
+  if (!volumeFill || !volumeSlider) return;
+
+  const percentage = volume * 100;
+  volumeFill.style.width = `${percentage}%`;
+  volumeSlider.value = percentage.toString();
+}
+
+/**
+ * Set the volume and update UI
+ */
+function setVolume(volume: number): void {
+  songPlayer.setVolume(volume);
+  updateVolumeBar(volume);
+  updateVolumeIcon(volume);
+
+  // Save to localStorage
+  localStorage.setItem('volume_level', volume.toString());
+}
+
+/**
+ * Toggle mute/unmute
+ */
+function toggleMute(): void {
+  if (isMuted) {
+    // Unmute
+    isMuted = false;
+    setVolume(previousVolume);
+  } else {
+    // Mute
+    isMuted = true;
+    previousVolume = songPlayer.getVolume();
+    setVolume(0);
+  }
+}
+
+/**
+ * Setup volume control event listeners
+ */
+function setupVolumeControls(): void {
+  // Volume slider
+  volumeSlider?.addEventListener('input', (e) => {
+    const target = e.target as HTMLInputElement;
+    const percentage = parseFloat(target.value);
+    const volume = percentage / 100;
+
+    isMuted = false;
+    setVolume(volume);
+  });
+
+  // Volume icon button (mute/unmute)
+  volumeIconBtn?.addEventListener('click', () => {
+    toggleMute();
+  });
+}
+
+/**
  * Load saved settings from localStorage
  */
 function loadSavedSettings(): void {
@@ -475,6 +559,18 @@ function loadSavedSettings(): void {
   const savedPattern = localStorage.getItem('last_file_pattern');
   if (savedPattern && filePattern) {
     filePattern.value = savedPattern;
+  }
+
+  // Load volume level
+  const savedVolume = localStorage.getItem('volume_level');
+  if (savedVolume) {
+    const volume = parseFloat(savedVolume);
+    if (!isNaN(volume) && volume >= 0 && volume <= 1) {
+      setVolume(volume);
+    }
+  } else {
+    // Default volume is 100%
+    setVolume(1.0);
   }
 }
 
@@ -497,6 +593,12 @@ window.addEventListener("DOMContentLoaded", () => {
   currentTimeLabel = document.querySelector("#current-time");
   totalTimeLabel = document.querySelector("#total-time");
 
+  // Get volume control elements
+  volumeFill = document.querySelector("#volume-fill");
+  volumeSlider = document.querySelector("#volume-slider");
+  volumeIconBtn = document.querySelector("#volume-icon-btn");
+  volumeIcon = document.querySelector("#volume-icon");
+
   // Get function buttons
   fn1Btn = document.querySelector("#fn-1");
   fn2Btn = document.querySelector("#fn-2");
@@ -508,6 +610,7 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   setupPlayerControls();
+  setupVolumeControls();
 
   // Setup function buttons
   fn1Btn?.addEventListener('click', () => {
