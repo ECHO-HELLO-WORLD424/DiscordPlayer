@@ -478,11 +478,11 @@ function updateVolumeIcon(volume: number): void {
   if (!volumeIcon) return;
 
   if (volume === 0 || isMuted) {
-    volumeIcon.src = '/src/assets/icons/volume_off_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg';
+    volumeIcon.src = '/assets/icons/volume_off_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg';
   } else if (volume < 0.5) {
-    volumeIcon.src = '/src/assets/icons/volume_down_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg';
+    volumeIcon.src = '/assets/icons/volume_down_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg';
   } else {
-    volumeIcon.src = '/src/assets/icons/volume_up_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg';
+    volumeIcon.src = '/assets/icons/volume_up_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg';
   }
 }
 
